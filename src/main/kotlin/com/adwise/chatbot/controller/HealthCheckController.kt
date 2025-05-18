@@ -27,4 +27,12 @@ class HealthCheckController(private val mongoTemplate: MongoTemplate) {
             ))
         }
     }
+
+    @GetMapping("/")
+    fun checkHealth(): ResponseEntity<Map<String, Any>> {
+        return ResponseEntity.ok(mapOf(
+            "status" to "UP",
+            "message" to "Chatbot service is running"
+        ))
+    }
 } 

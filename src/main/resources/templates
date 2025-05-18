@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chatbot Agent Form</title>
+</head>
+<body>
+    <h1>Agent Information</h1>
+
+    <!-- Display a success message if the 'success' parameter is present in the URL -->
+    <p th:if="${param.success}" style="color: green;">Agent information saved successfully!</p>
+
+    <!-- The form:
+         - action: Submits to the /chatbot URL
+         - th:object: Binds the form fields to the 'contentRequest' object from the model
+         - method: Uses the POST HTTP method
+    -->
+    <form action="#" th:action="@{/chatbot}" th:object="${contentRequest}" method="post">
+        <div>
+            <label for="name">Name:</label>
+            <!-- Input field for name, bound to the 'name' property of the contentRequest object -->
+            <input type="text" id="name" th:field="*{name}" required/>
+        </div>
+        <br/>
+        <div>
+            <label for="contactNumber">Contact Number:</label>
+            <!-- Input field for contact number, bound to the 'contactNumber' property of the contentRequest object -->
+            <input type="text" id="contactNumber" th:field="*{contactNumber}" required/>
+        </div>
+        <br/>
+        <div>
+            <label for="format">Preferred Format:</label>
+            <!-- Dropdown (select) for format, bound to the 'format' property of the contentRequest object -->
+            <select id="format" th:field="*{format}" required>
+                <option value="">-- Select Format --</option>
+                <!-- Iterate over the 'formats' list from the model to create dropdown options -->
+                <option th:each="fmt : ${formats}" th:value="${fmt}" th:text="${fmt}"></option>
+            </select>
+        </div>
+        <br/>
+        <div>
+            <!-- Submit button -->
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
+</body>
+</html>

@@ -5,10 +5,14 @@ import com.adwise.chatbot.repository.AgentRepository
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import com.adwise.chatbot.service.AgentService
 
 @RestController
 @RequestMapping("/api/agents")
-class AgentController(private val agentRepository: AgentRepository) {
+class AgentController(
+    private val agentRepository: AgentRepository,
+    private val agentService: AgentService
+) {
 
     private val logger = LoggerFactory.getLogger(AgentController::class.java)
 
@@ -45,6 +49,20 @@ class AgentController(private val agentRepository: AgentRepository) {
             logger.error("Error fetching agent: ${e.message}", e)
             ResponseEntity.status(500).body(mapOf(
                 "error" to "Failed to fetch agent",
+                "message" to e.message
+            ))
+        }
+    }
+
+    @GetMapping
+    fun getAllAgents(): ResponseEntity<Any> {
+        return try {
+            val agents = agentService.getAllAgents()
+            ResponseEntity.ok(agents)
+        } catch (e: Exception) {
+            logger.error("Error fetching all agents: ${e.message}", e)
+            ResponseEntity.status(500).body(mapOf(
+                "error" to "Failed to fetch all agents",
                 "message" to e.message
             ))
         }
